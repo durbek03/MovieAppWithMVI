@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/drawable/bottom_nav_style.xml" value="0.104" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/activity_main.xml" value="0.19" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/child_pager_item.xml" value="0.17844202898550723" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/child_viewpager_item.xml" value="0.1852355072463768" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/dummy_fragment.xml" value="0.17844202898550723" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/feed_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/fragment_profile.xml" value="0.1852355072463768" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/parent_viewpager_item.xml" value="0.1852355072463768" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/saved_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

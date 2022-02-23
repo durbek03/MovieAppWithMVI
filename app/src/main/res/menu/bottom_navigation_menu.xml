@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    xmlns:app2="http://schemas.android.com/apk/res-auto">
+    <item
+        android:checked="true"
+        app:showAsAction="always"
+        android:id="@+id/main"
+        android:icon="@drawable/ic_widget"
+        android:title="Feed" />
+    <item
+        app1:showAsAction="always"
+        android:id="@+id/saved"
+        android:icon="@drawable/ic_bookmark"
+        android:title="Saved" />
+    <item
+        app2:showAsAction="always"
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+</menu>
