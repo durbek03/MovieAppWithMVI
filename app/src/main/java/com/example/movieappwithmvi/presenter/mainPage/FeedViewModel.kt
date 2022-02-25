@@ -1,59 +1,62 @@
 package com.example.movieappwithmvi.presenter.mainPage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieappwithmvi.constants.Resource
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import com.example.movieappwithmvi.domain.locale.DatabaseRepository
+import com.example.movieappwithmvi.domain.remote.ApiRepository
+import com.example.movieappwithmvi.presenter.mainPage.pagination.MoviePagingSource
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedIntent
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
-import com.example.movieappwithmvi.useCases.GetGenresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FeedViewModel @Inject constructor(private val getGenresUseCase: GetGenresUseCase) :
+class FeedViewModel @Inject constructor(val api: ApiRepository, val database : DatabaseRepository) :
     ViewModel() {
     private val TAG = "FeedViewModel"
-    
+
     val action = MutableSharedFlow<FeedIntent>()
-    private val _state = MutableStateFlow<FeedStates>(FeedStates.Loading)
-    val state = _state.asStateFlow()
+    private val _movieState = MutableStateFlow<FeedStates>(FeedStates.Loading)
+    val movieState = _movieState.asStateFlow()
+
+    private val _savedMovieState = MutableStateFlow<FeedStates>(FeedStates.Loading)
+    val savedMovieStates = _savedMovieState.asStateFlow()
 
     init {
         handleIntent()
         viewModelScope.launch {
-            action.emit(FeedIntent.FetchGenres)
-        }
-    }
-
-    private fun fetchGenres() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val fetchResult = getGenresUseCase.getGenres()
-            fetchResult.collect {
-                when (it) {
-                    is Resource.Loading -> {
-                        _state.value = FeedStates.Loading
-                    }
-                    is Resource.Success -> {
-                        _state.value = FeedStates.GenresFetched(it.data ?: emptyList())
-                    }
-                    is Resource.Error -> {
-                        _state.value = FeedStates.Failed(it.message ?: "failed")
-                    }
-                }
-            }
+            action.emit(FeedIntent.FetchMovies)
+            action.emit(FeedIntent.FetchSavedMovies)
         }
     }
 
     private fun handleIntent() {
         viewModelScope.launch {
-            action.collectLatest {
-                if (it is FeedIntent.FetchGenres) {
-                    Log.d(TAG, "handleIntent: fetching Genres")
-                    fetchGenres()
+            action.collect {
+                when (it) {
+                    is FeedIntent.FetchMovies -> {
+                        val flow = Pager(
+                            PagingConfig(pageSize = 20)
+                        ) {
+                            MoviePagingSource(api)
+                        }.flow
+                        flow.collectLatest { paginatedMovie ->
+                            _movieState.emit(FeedStates.MoviesFetched(movies = paginatedMovie))
+                        }
+                    }
+                    is FeedIntent.FetchSavedMovies -> {
+                        database.getSavedMovies()
+                            .collectLatest { savedMovies ->
+                                _savedMovieState.emit(FeedStates.SavedMoviesFetched(movies = savedMovies))
+                            }
+                    }
+                    is FeedIntent.MovieSelected -> {
+
+                    }
                 }
             }
         }

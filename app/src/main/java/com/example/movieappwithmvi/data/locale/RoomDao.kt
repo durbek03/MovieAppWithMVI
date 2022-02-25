@@ -3,26 +3,18 @@ package com.example.movieappwithmvi.data.locale
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.movieappwithmvi.models.Genre
-import com.example.movieappwithmvi.models.Movie
+import com.example.movieappwithmvi.models.SavedMovie
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RoomDao {
+    //SavedMovies Table
     @Insert
-    fun addGenre(genre: Genre)
+    suspend fun saveMovie(savedMovies: SavedMovie)
 
-    @Insert
-    fun addMovie(movie: Movie)
+    @Query("select * from SavedMovie")
+    fun getSavedMovies(): Flow<List<SavedMovie>>
 
-    @Query("select * from Genre")
-    suspend fun getGenres(): List<Genre>
-
-    @Query("select * from Movie where genre like :genre")
-    suspend fun getMovies(genre: String): List<Movie>
-
-    @Query("delete from Genre")
-    suspend fun clearGenres()
-
-    @Query("delete from Movie")
-    suspend fun clearMovies()
+    @Query("delete from SavedMovie where imdbid = :id")
+    suspend fun unSaveMovie(id: String)
 }

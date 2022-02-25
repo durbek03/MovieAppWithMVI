@@ -1,6 +1,9 @@
 package com.example.movieappwithmvi.presenter.mainPage.states
 
+import com.example.movieappwithmvi.models.Movie
+
 sealed class FeedIntent {
-    object FetchGenres : FeedIntent()
-    class FetchMovies(val genre: String) : FeedIntent()
+    object FetchMovies : FeedIntent()
+    object FetchSavedMovies : FeedIntent()
+    class MovieSelected(movie: Movie) : FeedIntent()
 }

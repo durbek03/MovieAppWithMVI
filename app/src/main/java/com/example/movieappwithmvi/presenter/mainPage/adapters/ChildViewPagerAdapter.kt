@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieappwithmvi.R
+import com.example.movieappwithmvi.constants.toSeparatedStr
 import com.example.movieappwithmvi.databinding.ChildPagerItemBinding
-import com.example.movieappwithmvi.databinding.DummyFragmentBinding
 import com.example.movieappwithmvi.models.Movie
 import com.squareup.picasso.Picasso
 
@@ -17,15 +17,6 @@ class ChildViewPagerAdapter : ListAdapter<Movie,ChildViewPagerAdapter.Vh >(Child
             if (movie.imageurl.isNotEmpty()) {
                 Picasso.get().load(movie.imageurl[0]).into(binding.movieImage)
             }
-            var str = ""
-            for (i in movie.genre.indices) {
-                val genre = movie.genre[i]
-                if (i != movie.genre.lastIndex) {
-                    str += genre
-                } else str += "$genre, "
-            }
-            binding.movieGenres.text = str
-            binding.movieName.text = movie.title
         }
     }
 

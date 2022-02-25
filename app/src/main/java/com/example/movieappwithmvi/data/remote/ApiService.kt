@@ -6,17 +6,11 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface ApiService {
-    @Headers(
-        "x-rapidapi-host: ott-details.p.rapidapi.com",
-        "x-rapidapi-key: 37f60e0f28mshc0f871e06f7c3e4p1c9610jsn8767086cf81f"
-    )
-    @GET("getParams?param=genre")
-    suspend fun getGenres(): List<String>
 
     @Headers(
         "x-rapidapi-host: ott-details.p.rapidapi.com",
         "x-rapidapi-key: 37f60e0f28mshc0f871e06f7c3e4p1c9610jsn8767086cf81f"
     )
     @GET("advancedsearch?start_year=2015&end_year=2022&language=english&sort=latest&page=1")
-    suspend fun getMovies(@Query(value = "genre") genre: String, @Query("page") page: Int): Movies
+    suspend fun getMovies(@Query("page") page: Int): Movies
 }

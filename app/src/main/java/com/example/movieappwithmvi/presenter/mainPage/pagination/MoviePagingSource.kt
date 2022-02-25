@@ -7,7 +7,7 @@ import com.example.movieappwithmvi.domain.remote.ApiRepository
 import com.example.movieappwithmvi.models.Movie
 import javax.inject.Inject
 
-class MoviePagingSource (val remote: ApiRepository, val genre: String) : PagingSource<Int, Movie>() {
+class MoviePagingSource (val remote: ApiRepository) : PagingSource<Int, Movie>() {
     private val TAG = "MoviePagingSource"
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -20,7 +20,7 @@ class MoviePagingSource (val remote: ApiRepository, val genre: String) : PagingS
         val key = params.key ?: 1
         val pageSize = params.loadSize
 
-        val movies = remote.getMovies(genre, key)
+        val movies = remote.getMovies(key)
         return if (!movies.isNullOrEmpty()) {
             val nextKey = if (movies.size < pageSize) null else key + 1
             val prevKey = if (key == 1) null else key - 1

@@ -6,6 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieappwithmvi.R
+import com.example.movieappwithmvi.constants.toSeparatedStr
 import com.example.movieappwithmvi.databinding.ChildPagerItemBinding
 import com.example.movieappwithmvi.models.Movie
 import com.squareup.picasso.Picasso
@@ -20,6 +21,7 @@ class MoviePagerAdapter :
             binding.movieName.text = movie.title
             try {
                 Picasso.get().load(movie.imageurl[0]).into(binding.movieImage)
+                binding.movieImage.clipToOutline = true
             } catch (e:Exception) {
                 e.printStackTrace()
             }
@@ -44,17 +46,5 @@ class MoviePagerAdapter :
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.equals(newItem)
         }
-    }
-
-    fun List<String>.toSeparatedStr(): String {
-        var str = ""
-        for (i in this.indices) {
-            if (i != 0) {
-                str += ", ${this[i]}"
-            } else {
-                str += this[i]
-            }
-        }
-        return str
     }
 }

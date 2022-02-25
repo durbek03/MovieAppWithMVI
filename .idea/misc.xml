@@ -4,12 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/drawable/bottom_nav_style.xml" value="0.104" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/drawable/button1.xml" value="0.111" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/drawable/smooth_corner.xml" value="0.111" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/activity_main.xml" value="0.19" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/child_pager_item.xml" value="0.17844202898550723" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/child_viewpager_item.xml" value="0.1852355072463768" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/dummy_fragment.xml" value="0.17844202898550723" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/feed_fragment.xml" value="0.2" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/fragment_profile.xml" value="0.1852355072463768" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/layout.xml" value="0.25" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/parent_viewpager_item.xml" value="0.1852355072463768" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/layout/saved_fragment.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/MovieAppWithMVI/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.20416666666666666" />

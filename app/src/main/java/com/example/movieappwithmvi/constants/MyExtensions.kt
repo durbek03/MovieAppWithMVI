@@ -17,3 +17,15 @@ fun <T> Fragment.collectFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
         }
     }
 }
+
+fun List<String>.toSeparatedStr(): String {
+    var str = ""
+    for (i in this.indices) {
+        if (i != 0) {
+            str += ", ${this[i]}"
+        } else {
+            str += this[i]
+        }
+    }
+    return str
+}
