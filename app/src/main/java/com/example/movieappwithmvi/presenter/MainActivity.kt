@@ -2,15 +2,18 @@ package com.example.movieappwithmvi.presenter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.view.get
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.movieappwithmvi.R
 import com.example.movieappwithmvi.databinding.ActivityMainBinding
 import com.example.movieappwithmvi.presenter.mainPage.FeedFragment
 import com.example.movieappwithmvi.presenter.profilePage.ProfileFragment
 import com.example.movieappwithmvi.presenter.savedPage.SavedFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -43,6 +46,18 @@ class MainActivity : AppCompatActivity() {
                 is FeedFragment -> openFragment(feedFragment)
                 is SavedFragment -> openFragment(savedFragment)
                 is ProfileFragment -> openFragment(profileFragment)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.bottomBarState.collectLatest {
+                if (it is AppBarState.VISIBLE) {
+                    binding.appBarLayout.visibility = View.VISIBLE
+                    binding.bottomNavBar.visibility = View.VISIBLE
+                } else if (it is AppBarState.INVISIBLE) {
+                    binding.appBarLayout.visibility = View.GONE
+                    binding.bottomNavBar.visibility = View.GONE
+                }
             }
         }
     }

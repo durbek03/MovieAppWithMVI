@@ -6,6 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieappwithmvi.R
+import com.example.movieappwithmvi.constants.Constants.POSTER_PATH
 import com.example.movieappwithmvi.databinding.ChildPagerItemBinding
 import com.example.movieappwithmvi.models.Movie
 import com.squareup.picasso.Picasso
@@ -17,8 +18,7 @@ class MoviePagerAdapter(val listener: MovieSelectedListener) :
         fun onBind(movie: Movie?) {
             movie ?: return
             try {
-                val base = "https://image.tmdb.org/t/p/w300"
-                Picasso.get().load(base + movie.posterPath).into(binding.movieImage)
+                Picasso.get().load(POSTER_PATH + movie.posterPath).into(binding.movieImage)
                 binding.movieImage.clipToOutline = true
                 binding.movieName.text = movie.title
                 binding.movieRating.text = movie.voteAverage.toString()

@@ -17,6 +17,7 @@ import com.example.movieappwithmvi.presenter.mainPage.adapters.CustomPageTransfo
 import com.example.movieappwithmvi.presenter.mainPage.adapters.HorizontalMarginDecor
 import com.example.movieappwithmvi.presenter.mainPage.adapters.MoviePagerAdapter
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
+import com.example.movieappwithmvi.presenter.movieDetailPage.MovieDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +32,18 @@ class FeedFragment : Fragment() {
         viewModel = ViewModelProvider(this)[FeedViewModel::class.java]
         pagerAdapter = MoviePagerAdapter(object : MoviePagerAdapter.MovieSelectedListener {
             override fun onSelected(movie: Movie) {
-
+                val beginTransaction = parentFragmentManager.beginTransaction()
+                val frag = MovieDetailFragment()
+                frag.arguments = Bundle().apply {
+                    putSerializable("movie", movie)
+                }
+                beginTransaction
+                    .replace(
+                        R.id.frag_container,
+                        frag,
+                    )
+                    .addToBackStack(frag.tag)
+                    .commit()
             }
         })
     }
@@ -45,7 +57,12 @@ class FeedFragment : Fragment() {
         binding.viewPager.offscreenPageLimit = 1
         binding.viewPager.setPageTransformer(CustomPageTransformer(requireContext()))
         binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.addItemDecoration(HorizontalMarginDecor(requireContext(), R.dimen.viewpager_current_item_horizontal_margin))
+        binding.viewPager.addItemDecoration(
+            HorizontalMarginDecor(
+                requireContext(),
+                R.dimen.viewpager_current_item_horizontal_margin
+            )
+        )
 
         collectFlow(viewModel.movieState) {
             when (it) {
@@ -60,7 +77,8 @@ class FeedFragment : Fragment() {
                         viewPager.visibility = View.VISIBLE
                         progressCircular.visibility = View.INVISIBLE
                     }
-                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 is FeedStates.MoviesFetched -> {
                     binding.apply {

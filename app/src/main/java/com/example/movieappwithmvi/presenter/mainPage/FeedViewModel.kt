@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.movieappwithmvi.domain.locale.DatabaseRepository
 import com.example.movieappwithmvi.domain.remote.ApiRepository
 import com.example.movieappwithmvi.presenter.mainPage.pagination.MoviePagingSource
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FeedViewModel @Inject constructor(val api: ApiRepository, val database : DatabaseRepository) :
+class FeedViewModel @Inject constructor(val api: ApiRepository, val database: DatabaseRepository) :
     ViewModel() {
     private val TAG = "FeedViewModel"
 
@@ -43,7 +44,7 @@ class FeedViewModel @Inject constructor(val api: ApiRepository, val database : D
                             PagingConfig(pageSize = 20)
                         ) {
                             MoviePagingSource(api)
-                        }.flow
+                        }.flow.cachedIn(viewModelScope)
                         flow.collect { paginatedMovie ->
                             _movieState.emit(FeedStates.MoviesFetched(movies = paginatedMovie))
                         }
@@ -53,9 +54,6 @@ class FeedViewModel @Inject constructor(val api: ApiRepository, val database : D
                             .collectLatest { savedMovies ->
                                 _savedMovieState.emit(FeedStates.SavedMoviesFetched(movies = savedMovies))
                             }
-                    }
-                    is FeedIntent.MovieSelected -> {
-
                     }
                 }
             }
