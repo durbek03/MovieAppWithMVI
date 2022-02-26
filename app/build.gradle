@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
     //Paging 3 library
     def paging_version = "3.1.0"
     implementation("androidx.paging:paging-runtime:$paging_version")

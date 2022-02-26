@@ -44,7 +44,7 @@ class FeedViewModel @Inject constructor(val api: ApiRepository, val database : D
                         ) {
                             MoviePagingSource(api)
                         }.flow
-                        flow.collectLatest { paginatedMovie ->
+                        flow.collect { paginatedMovie ->
                             _movieState.emit(FeedStates.MoviesFetched(movies = paginatedMovie))
                         }
                     }

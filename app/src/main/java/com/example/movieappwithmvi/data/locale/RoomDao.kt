@@ -15,6 +15,6 @@ interface RoomDao {
     @Query("select * from SavedMovie")
     fun getSavedMovies(): Flow<List<SavedMovie>>
 
-    @Query("delete from SavedMovie where imdbid = :id")
-    suspend fun unSaveMovie(id: String)
+    @Query("delete from SavedMovie where id = :id")
+    suspend fun unSaveMovie(id: Int)
 }

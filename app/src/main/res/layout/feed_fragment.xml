@@ -14,36 +14,10 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="5:6"
+            app:layout_constraintDimensionRatio="3:4"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/movieName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewPager" />
-
-        <TextView
-            android:id="@+id/movieGenres"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieName" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_circular"
@@ -64,6 +38,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movieGenres" />
+            app:layout_constraintTop_toBottomOf="@id/viewPager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

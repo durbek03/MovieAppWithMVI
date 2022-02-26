@@ -3,9 +3,9 @@ package com.example.movieappwithmvi.presenter.mainPage.pagination
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.movieappwithmvi.constants.Constants
 import com.example.movieappwithmvi.domain.remote.ApiRepository
 import com.example.movieappwithmvi.models.Movie
-import javax.inject.Inject
 
 class MoviePagingSource (val remote: ApiRepository) : PagingSource<Int, Movie>() {
     private val TAG = "MoviePagingSource"
@@ -18,11 +18,10 @@ class MoviePagingSource (val remote: ApiRepository) : PagingSource<Int, Movie>()
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         Log.d(TAG, "load: loading movies")
         val key = params.key ?: 1
-        val pageSize = params.loadSize
 
-        val movies = remote.getMovies(key)
+        val movies = remote.getMovies(key, Constants.API_KEY)
         return if (!movies.isNullOrEmpty()) {
-            val nextKey = if (movies.size < pageSize) null else key + 1
+            val nextKey = if (key == 500) null else key + 1
             val prevKey = if (key == 1) null else key - 1
             LoadResult.Page(data = movies, prevKey, nextKey)
         } else {

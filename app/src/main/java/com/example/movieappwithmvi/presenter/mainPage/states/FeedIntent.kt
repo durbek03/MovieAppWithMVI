@@ -5,5 +5,4 @@ import com.example.movieappwithmvi.models.Movie
 sealed class FeedIntent {
     object FetchMovies : FeedIntent()
     object FetchSavedMovies : FeedIntent()
-    class MovieSelected(movie: Movie) : FeedIntent()
 }

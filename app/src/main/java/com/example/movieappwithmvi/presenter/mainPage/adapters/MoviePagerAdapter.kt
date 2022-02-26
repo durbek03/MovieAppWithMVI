@@ -6,24 +6,27 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieappwithmvi.R
-import com.example.movieappwithmvi.constants.toSeparatedStr
 import com.example.movieappwithmvi.databinding.ChildPagerItemBinding
 import com.example.movieappwithmvi.models.Movie
 import com.squareup.picasso.Picasso
 
-class MoviePagerAdapter :
+class MoviePagerAdapter(val listener: MovieSelectedListener) :
     PagingDataAdapter<Movie, MoviePagerAdapter.Vh>(MovieDiffUtil()) {
 
     inner class Vh(val binding: ChildPagerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(movie: Movie?) {
             movie ?: return
-            binding.movieGenres.text = movie.genre.toSeparatedStr()
-            binding.movieName.text = movie.title
             try {
-                Picasso.get().load(movie.imageurl[0]).into(binding.movieImage)
+                val base = "https://image.tmdb.org/t/p/w300"
+                Picasso.get().load(base + movie.posterPath).into(binding.movieImage)
                 binding.movieImage.clipToOutline = true
-            } catch (e:Exception) {
+                binding.movieName.text = movie.title
+                binding.movieRating.text = movie.voteAverage.toString()
+            } catch (e: Exception) {
                 e.printStackTrace()
+            }
+            binding.root.setOnClickListener {
+                listener.onSelected(movie)
             }
         }
     }
@@ -40,11 +43,15 @@ class MoviePagerAdapter :
 
     class MovieDiffUtil : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.imdbid == newItem.imdbid
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.equals(newItem)
         }
+    }
+
+    interface MovieSelectedListener {
+        fun onSelected(movie: Movie)
     }
 }

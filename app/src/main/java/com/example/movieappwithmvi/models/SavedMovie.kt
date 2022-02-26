@@ -3,23 +3,50 @@ package com.example.movieappwithmvi.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity
 data class SavedMovie(
     @ColumnInfo
-    val genre: List<String>,
+    @SerializedName("adult")
+    val adult: Boolean,
     @ColumnInfo
-    val imageurl: List<String>,
+    @SerializedName("backdrop_path")
+    val backdropPath: String,
+    @ColumnInfo
+    @SerializedName("genre_ids")
+    val genreIds: List<Int>,
     @PrimaryKey(autoGenerate = false)
-    val imdbid: String,
+    @SerializedName("id")
+    val id: Int,
     @ColumnInfo
-    val imdbrating: Double,
+    @SerializedName("original_language")
+    val originalLanguage: String,
     @ColumnInfo
-    val released: Int,
+    @SerializedName("original_title")
+    val originalTitle: String,
     @ColumnInfo
-    val synopsis: String,
+    @SerializedName("overview")
+    val overview: String,
     @ColumnInfo
+    @SerializedName("popularity")
+    val popularity: Double,
+    @ColumnInfo
+    @SerializedName("poster_path")
+    val posterPath: String,
+    @ColumnInfo
+    @SerializedName("release_date")
+    val releaseDate: String,
+    @ColumnInfo
+    @SerializedName("title")
     val title: String,
     @ColumnInfo
-    val type: String
+    @SerializedName("video")
+    val video: Boolean,
+    @ColumnInfo
+    @SerializedName("vote_average")
+    val voteAverage: Double,
+    @ColumnInfo
+    @SerializedName("vote_count")
+    val voteCount: Int
 )
