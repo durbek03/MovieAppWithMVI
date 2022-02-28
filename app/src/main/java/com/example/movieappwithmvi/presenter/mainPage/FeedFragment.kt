@@ -8,23 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.viewpager.widget.PagerAdapter
+import androidx.lifecycle.lifecycleScope
 import com.example.movieappwithmvi.R
-import com.example.movieappwithmvi.constants.collectFlow
 import com.example.movieappwithmvi.databinding.FeedFragmentBinding
 import com.example.movieappwithmvi.models.Movie
 import com.example.movieappwithmvi.presenter.mainPage.adapters.CustomPageTransformer
 import com.example.movieappwithmvi.presenter.mainPage.adapters.HorizontalMarginDecor
 import com.example.movieappwithmvi.presenter.mainPage.adapters.MoviePagerAdapter
+import com.example.movieappwithmvi.presenter.mainPage.states.FeedIntent
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
 import com.example.movieappwithmvi.presenter.movieDetailPage.MovieDetailFragment
+import com.example.movieappwithmvi.presenter.savedPage.SavedRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
     private lateinit var viewModel: FeedViewModel
     lateinit var binding: FeedFragmentBinding
     lateinit var pagerAdapter: MoviePagerAdapter
+    lateinit var savedRvAdapter: SavedRvAdapter
     private val TAG = "FeedFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,7 @@ class FeedFragment : Fragment() {
                     .commit()
             }
         })
+        savedRvAdapter = SavedRvAdapter()
     }
 
     override fun onCreateView(
@@ -63,35 +68,50 @@ class FeedFragment : Fragment() {
                 R.dimen.viewpager_current_item_horizontal_margin
             )
         )
+        binding.rv.adapter = savedRvAdapter
 
-        collectFlow(viewModel.movieState) {
-            when (it) {
-                is FeedStates.Loading -> {
-                    binding.apply {
-                        viewPager.visibility = View.INVISIBLE
-                        progressCircular.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            viewModel.movieState.collect {
+                when (it) {
+                    is FeedStates.Loading -> {
+                        binding.apply {
+                            viewPager.visibility = View.INVISIBLE
+                            progressCircular.visibility = View.VISIBLE
+                        }
                     }
-                }
-                is FeedStates.Failed -> {
-                    binding.apply {
-                        viewPager.visibility = View.VISIBLE
-                        progressCircular.visibility = View.INVISIBLE
+                    is FeedStates.Failed -> {
+                        binding.apply {
+                            viewPager.visibility = View.VISIBLE
+                            progressCircular.visibility = View.INVISIBLE
+                        }
+                        Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
+                            .show()
                     }
-                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
-                        .show()
-                }
-                is FeedStates.MoviesFetched -> {
-                    binding.apply {
-                        viewPager.visibility = View.VISIBLE
-                        progressCircular.visibility = View.INVISIBLE
+                    is FeedStates.MoviesFetched -> {
+                        binding.apply {
+                            viewPager.visibility = View.VISIBLE
+                            progressCircular.visibility = View.INVISIBLE
+                        }
+                        pagerAdapter.submitData(it.movies)
                     }
-                    Log.d(TAG, "onCreateView: ${it.movies.toString()}")
-                    pagerAdapter.submitData(it.movies)
-                }
-                is FeedStates.SavedMoviesFetched -> {
-
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            viewModel.savedMovieStates.collect {
+                when (it) {
+                    is FeedStates.SavedMoviesFetched -> {
+                        savedRvAdapter.submitList(it.movies)
+                        Log.d(TAG, "onCreateView: ${it.movies.toString()}")
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.action.emit(FeedIntent.FetchMovies)
+            viewModel.action.emit(FeedIntent.FetchSavedMovies)
         }
 
         return binding.root

@@ -22,12 +22,6 @@ object FeedModule {
 
     @Provides
     @ViewModelScoped
-    fun provideDatabaseRep(appDatabase: AppDatabase): DatabaseRepository {
-        return DatabaseImpl(appDatabase)
-    }
-
-    @Provides
-    @ViewModelScoped
     fun provideApiRep(apiService: ApiService): ApiRepository {
         return ApiImpl(apiService)
     }

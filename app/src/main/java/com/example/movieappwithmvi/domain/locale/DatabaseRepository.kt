@@ -1,10 +1,11 @@
 package com.example.movieappwithmvi.domain.locale
 
-import com.example.movieappwithmvi.models.SavedMovie
+import com.example.movieappwithmvi.models.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface DatabaseRepository {
-    suspend fun saveMovie(savedMovies: SavedMovie)
-    fun getSavedMovies(): Flow<List<SavedMovie>>
+    fun saveMovie(movie: Movie)
+    fun getSavedMovies(): Flow<List<Movie>>
     suspend fun unSaveMovie(id: Int)
+    suspend fun checkIfExists(id: Int): Boolean
 }

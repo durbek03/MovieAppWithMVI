@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+       <KeyFrameSet>
+       </KeyFrameSet>
+        <OnSwipe motion:touchAnchorId="@+id/scrollView" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toTopOf="@id/bottomBar"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            motion:layout_constraintTop_toBottomOf="@+id/movieViewsSmall"
+            android:id="@+id/scrollView"
+            android:layout_marginTop="10dp" />
+        <Constraint
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintTop_toTopOf="@id/scrollView"
+            android:layout_marginTop="-35dp"
+            android:visibility="invisible" />
+        <Constraint
+            android:id="@+id/movieNameSmall"
+            motion:layout_constraintLeft_toRightOf="@id/returnBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            motion:layout_constraintBottom_toTopOf="@id/movieViewsSmall"
+            motion:layout_constraintRight_toLeftOf="@id/saveBtn"
+            motion:layout_constraintTop_toTopOf="@id/returnBtn"
+            android:layout_marginRight="70dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginStart="70dp" />
+        <Constraint
+            android:id="@+id/movieViewsSmall"
+            motion:layout_constraintLeft_toRightOf="@id/returnBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="@id/returnBtn"
+            android:visibility="visible"
+            motion:layout_constraintTop_toBottomOf="@id/movieNameSmall"
+            motion:layout_constraintRight_toLeftOf="@id/saveBtn" />
+        <Constraint
+            android:id="@+id/playBtn"
+            motion:layout_constraintWidth_percent="0.08"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            motion:layout_constraintRight_toLeftOf="@id/saveBtn"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="20dp"
+            motion:layout_constraintDimensionRatio="1:1"
+            android:layout_marginTop="20dp" />
+    </ConstraintSet>
+</MotionScene>

@@ -1,5 +1,6 @@
 package com.example.movieappwithmvi.presenter.mainPage
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -29,32 +30,32 @@ class FeedViewModel @Inject constructor(val api: ApiRepository, val database: Da
 
     init {
         handleIntent()
-        viewModelScope.launch {
-            action.emit(FeedIntent.FetchMovies)
-            action.emit(FeedIntent.FetchSavedMovies)
-        }
     }
 
     private fun handleIntent() {
         viewModelScope.launch {
             action.collect {
-                when (it) {
-                    is FeedIntent.FetchMovies -> {
-                        val flow = Pager(
-                            PagingConfig(pageSize = 20)
-                        ) {
-                            MoviePagingSource(api)
-                        }.flow.cachedIn(viewModelScope)
-                        flow.collect { paginatedMovie ->
-                            _movieState.emit(FeedStates.MoviesFetched(movies = paginatedMovie))
+                if (it is FeedIntent.FetchMovies) {
+                    val flow = Pager(
+                        PagingConfig(pageSize = 20)
+                    ) {
+                        MoviePagingSource(api)
+                    }.flow.cachedIn(viewModelScope)
+                    flow.collect { paginatedMovie ->
+                        _movieState.emit(FeedStates.MoviesFetched(movies = paginatedMovie))
+                    }
+
+                }
+            }
+        }
+        viewModelScope.launch {
+            action.collect {
+                if (it is FeedIntent.FetchSavedMovies) {
+                    Log.d(TAG, "handleIntent: fetching saved movies")
+                    database.getSavedMovies()
+                        .collect { savedMovies ->
+                            _savedMovieState.emit(FeedStates.SavedMoviesFetched(movies = savedMovies))
                         }
-                    }
-                    is FeedIntent.FetchSavedMovies -> {
-                        database.getSavedMovies()
-                            .collectLatest { savedMovies ->
-                                _savedMovieState.emit(FeedStates.SavedMoviesFetched(movies = savedMovies))
-                            }
-                    }
                 }
             }
         }

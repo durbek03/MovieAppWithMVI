@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.example.movieappwithmvi.constants.Constants
 import com.example.movieappwithmvi.data.locale.AppDatabase
 import com.example.movieappwithmvi.data.remote.ApiService
+import com.example.movieappwithmvi.domain.locale.DatabaseImpl
+import com.example.movieappwithmvi.domain.locale.DatabaseRepository
 import com.example.movieappwithmvi.domain.remote.ApiImpl
 import com.example.movieappwithmvi.domain.remote.ApiRepository
 import dagger.Module
@@ -12,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.FragmentScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.android.scopes.ViewScoped
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
@@ -36,5 +39,11 @@ class AppModule {
         return Room.databaseBuilder(context, AppDatabase::class.java, "moviedatabase")
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabaseRep(appDatabase: AppDatabase): DatabaseRepository {
+        return DatabaseImpl(appDatabase)
     }
 }

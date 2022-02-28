@@ -2,19 +2,23 @@ package com.example.movieappwithmvi.data.locale
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.movieappwithmvi.models.SavedMovie
+import com.example.movieappwithmvi.models.Movie
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RoomDao {
     //SavedMovies Table
-    @Insert
-    suspend fun saveMovie(savedMovies: SavedMovie)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveMovie(movie: Movie)
 
-    @Query("select * from SavedMovie")
-    fun getSavedMovies(): Flow<List<SavedMovie>>
+    @Query("select * from Movie")
+    fun getSavedMovies(): Flow<List<Movie>>
 
-    @Query("delete from SavedMovie where id = :id")
+    @Query("delete from Movie where id = :id")
     suspend fun unSaveMovie(id: Int)
+
+    @Query("select * from Movie where id = :id")
+    suspend fun checkIfExists(id: Int): Movie?
 }
