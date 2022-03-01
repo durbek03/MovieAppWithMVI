@@ -8,7 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.movieappwithmvi.domain.locale.DatabaseRepository
 import com.example.movieappwithmvi.domain.remote.ApiRepository
-import com.example.movieappwithmvi.presenter.mainPage.pagination.MoviePagingSource
+import com.example.movieappwithmvi.pagination.MoviePagingSource
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedIntent
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ class FeedViewModel @Inject constructor(val api: ApiRepository, val database: Da
                     val flow = Pager(
                         PagingConfig(pageSize = 20)
                     ) {
-                        MoviePagingSource(api)
+                        MoviePagingSource(MoviePagingSource.QueryType.GET, api)
                     }.flow.cachedIn(viewModelScope)
                     flow.collect { paginatedMovie ->
                         _movieState.emit(FeedStates.MoviesFetched(movies = paginatedMovie))

@@ -1,4 +1,4 @@
-package com.example.movieappwithmvi.presenter.mainPage.pagination
+package com.example.movieappwithmvi.pagination
 
 import android.util.Log
 import androidx.paging.PagingSource
@@ -7,7 +7,8 @@ import com.example.movieappwithmvi.constants.Constants
 import com.example.movieappwithmvi.domain.remote.ApiRepository
 import com.example.movieappwithmvi.models.Movie
 
-class MoviePagingSource (val remote: ApiRepository) : PagingSource<Int, Movie>() {
+class MoviePagingSource (val queryType: QueryType, val remote: ApiRepository) : PagingSource<Int, Movie>() {
+    var query = ""
     private val TAG = "MoviePagingSource"
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -19,7 +20,14 @@ class MoviePagingSource (val remote: ApiRepository) : PagingSource<Int, Movie>()
         Log.d(TAG, "load: loading movies")
         val key = params.key ?: 1
 
-        val movies = remote.getMovies(key, Constants.API_KEY)
+        val movies: List<Movie> = when (queryType) {
+            is QueryType.GET -> {
+                remote.getMovies(key, Constants.API_KEY)
+            }
+            is QueryType.SEARCH -> {
+                remote.searchMovie(query, key, Constants.API_KEY)
+            }
+        }
         return if (!movies.isNullOrEmpty()) {
             val nextKey = if (key == 500) null else key + 1
             val prevKey = if (key == 1) null else key - 1
@@ -27,5 +35,10 @@ class MoviePagingSource (val remote: ApiRepository) : PagingSource<Int, Movie>()
         } else {
             LoadResult.Error(Throwable("smth went wrong"))
         }
+    }
+
+    sealed class QueryType {
+        object SEARCH : QueryType()
+        object GET : QueryType()
     }
 }

@@ -10,7 +10,7 @@ import com.example.movieappwithmvi.constants.Constants
 import com.example.movieappwithmvi.databinding.BigSavedMovieItemBinding
 import com.example.movieappwithmvi.databinding.SavedMovieItemBinding
 import com.example.movieappwithmvi.models.Movie
-import com.example.movieappwithmvi.presenter.mainPage.adapters.MoviePagerAdapter
+import com.example.movieappwithmvi.pagination.MoviePagerAdapter
 import com.squareup.picasso.Picasso
 
 class SavedRvAdapter(val rvType: RvType, val listener: MoviePagerAdapter.MovieSelectedListener) :

@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.movieappwithmvi.R
 import com.example.movieappwithmvi.databinding.SavedFragmentBinding
 import com.example.movieappwithmvi.models.Movie
-import com.example.movieappwithmvi.presenter.mainPage.adapters.MoviePagerAdapter
+import com.example.movieappwithmvi.pagination.MoviePagerAdapter
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedIntent
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
 import com.example.movieappwithmvi.presenter.movieDetailPage.MovieDetailFragment

@@ -38,9 +38,6 @@ class MovieDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[MovieDetailViewModel::class.java]
-        lifecycleScope.launch {
-            mainViewModel.bottomBarState.emit(AppBarState.INVISIBLE)
-        }
         args = arguments?.getSerializable("movie") as Movie
     }
 
@@ -93,6 +90,21 @@ class MovieDetailFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        lifecycleScope.launch {
+            mainViewModel.appBarState.emit(AppBarState.INVISIBLE)
+        }
+        super.onStart()
+    }
+
+    override fun onStop() {
+        lifecycleScope.launch {
+            mainViewModel.appBarState.emit(AppBarState.VISIBLE)
+        }
+        super.onStop()
+    }
+
+
     override fun onDestroyView() {
         val isSaved = viewModel.isSaved.value
         if (isSaved) {
@@ -103,9 +115,6 @@ class MovieDetailFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 locale.unSaveMovie(args.id)
             }
-        }
-        lifecycleScope.launch {
-            mainViewModel.bottomBarState.emit(AppBarState.VISIBLE)
         }
         super.onDestroyView()
     }

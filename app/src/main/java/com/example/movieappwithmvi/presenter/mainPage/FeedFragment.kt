@@ -14,14 +14,13 @@ import com.example.movieappwithmvi.databinding.FeedFragmentBinding
 import com.example.movieappwithmvi.models.Movie
 import com.example.movieappwithmvi.presenter.mainPage.adapters.CustomPageTransformer
 import com.example.movieappwithmvi.presenter.mainPage.adapters.HorizontalMarginDecor
-import com.example.movieappwithmvi.presenter.mainPage.adapters.MoviePagerAdapter
+import com.example.movieappwithmvi.pagination.MoviePagerAdapter
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedIntent
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
 import com.example.movieappwithmvi.presenter.movieDetailPage.MovieDetailFragment
 import com.example.movieappwithmvi.presenter.savedPage.RvType
 import com.example.movieappwithmvi.presenter.savedPage.SavedRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,16 +34,19 @@ class FeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[FeedViewModel::class.java]
-        pagerAdapter = MoviePagerAdapter(object : MoviePagerAdapter.MovieSelectedListener {
-            override fun onSelected(movie: Movie) {
-                transitionToDetails(movie)
-            }
-        })
-        savedRvAdapter = SavedRvAdapter(RvType.SMALL, object : MoviePagerAdapter.MovieSelectedListener {
-            override fun onSelected(movie: Movie) {
-                transitionToDetails(movie)
-            }
-        })
+        pagerAdapter = MoviePagerAdapter(
+            MoviePagerAdapter.ViewType.VIEWPAGER,
+            object : MoviePagerAdapter.MovieSelectedListener {
+                override fun onSelected(movie: Movie) {
+                    transitionToDetails(movie)
+                }
+            })
+        savedRvAdapter =
+            SavedRvAdapter(RvType.SMALL, object : MoviePagerAdapter.MovieSelectedListener {
+                override fun onSelected(movie: Movie) {
+                    transitionToDetails(movie)
+                }
+            })
     }
 
     override fun onCreateView(
