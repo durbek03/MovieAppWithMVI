@@ -18,6 +18,7 @@ import com.example.movieappwithmvi.presenter.mainPage.adapters.MoviePagerAdapter
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedIntent
 import com.example.movieappwithmvi.presenter.mainPage.states.FeedStates
 import com.example.movieappwithmvi.presenter.movieDetailPage.MovieDetailFragment
+import com.example.movieappwithmvi.presenter.savedPage.RvType
 import com.example.movieappwithmvi.presenter.savedPage.SavedRvAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -36,21 +37,14 @@ class FeedFragment : Fragment() {
         viewModel = ViewModelProvider(this)[FeedViewModel::class.java]
         pagerAdapter = MoviePagerAdapter(object : MoviePagerAdapter.MovieSelectedListener {
             override fun onSelected(movie: Movie) {
-                val beginTransaction = parentFragmentManager.beginTransaction()
-                val frag = MovieDetailFragment()
-                frag.arguments = Bundle().apply {
-                    putSerializable("movie", movie)
-                }
-                beginTransaction
-                    .replace(
-                        R.id.frag_container,
-                        frag,
-                    )
-                    .addToBackStack(frag.tag)
-                    .commit()
+                transitionToDetails(movie)
             }
         })
-        savedRvAdapter = SavedRvAdapter()
+        savedRvAdapter = SavedRvAdapter(RvType.SMALL, object : MoviePagerAdapter.MovieSelectedListener {
+            override fun onSelected(movie: Movie) {
+                transitionToDetails(movie)
+            }
+        })
     }
 
     override fun onCreateView(
@@ -115,5 +109,20 @@ class FeedFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun transitionToDetails(movie: Movie) {
+        val beginTransaction = parentFragmentManager.beginTransaction()
+        val frag = MovieDetailFragment()
+        frag.arguments = Bundle().apply {
+            putSerializable("movie", movie)
+        }
+        beginTransaction
+            .replace(
+                R.id.frag_container,
+                frag,
+            )
+            .addToBackStack(frag.tag)
+            .commit()
     }
 }
